@@ -2,8 +2,7 @@ package ai.vital.data.utils
 
 class RunBash{
 
-static boolean bEchoCommand = false;
-  
+
   // Add a bash() method to GString and String 
   static def enable(){
     GString.metaClass.bash = {->
@@ -17,10 +16,6 @@ static boolean bEchoCommand = false;
   static def bash(cmd){
 
     cmd = cmd as String
-
-    if (bEchoCommand) {
-      System.err.println cmd.replaceAll("\t","")
-    }
 
     // create a process for the shell
     ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
