@@ -1,5 +1,8 @@
 package ai.vital.data.utils
 
+// originally from:
+// https://github.com/jdurbin/durbinlib/blob/master/src/durbin/util/RunBash.groovy
+
 class RunBash{
 
 
