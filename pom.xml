@@ -38,6 +38,30 @@
 
 <plugins>
  
+ 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>1.4.1</version>
+        <executions>
+          <execution>
+            <id>enforce-property</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireProperty>
+                  <property>vital.release.repo</property>
+                  <message>You must set vital.release.repo property which is the path to cloned releases branch of https://github.com/vital-ai/vital-public-mvn-repo/</message>
+                </requireProperty>
+              </rules>
+              <fail>true</fail>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+ 
        <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <!-- 2.8.0-01 and later require maven-compiler-plugin 3.1 or higher -->
@@ -77,38 +101,10 @@
         <artifactId>maven-deploy-plugin</artifactId>
         <version>2.8.1</version>
         <configuration>
-            <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+            <altDeploymentRepository>internal.repo::default::file://${vital.release.repo}</altDeploymentRepository>
         </configuration>
     </plugin>
 
-
-
-
-
-        <plugin>
-            <groupId>com.github.github</groupId>
-            <artifactId>site-maven-plugin</artifactId>
-            <version>0.11</version>
-            <configuration>
-                <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
-                <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
-                <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
-                <branch>refs/heads/releases</branch>                       <!-- remote branch name -->
-                <includes><include>**/*</include></includes>
-                <repositoryName>nonono</repositoryName>      <!-- github repo name -->
-                <repositoryOwner>nonono</repositoryOwner>    <!-- github username  -->
-            </configuration>
-            <executions>
-              <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
-              <execution>
-                <goals>
-                  <goal>site</goal>
-                </goals>
-                <phase>deploy</phase>
-              </execution>
-            </executions>
-        </plugin>
-    
 </plugins>
 
 </build>
@@ -118,7 +114,7 @@
     <repository>
         <id>internal.repo</id>
         <name>Temporary Staging Repository</name>
-        <url>file://${project.build.directory}/mvn-repo</url>
+        <url>file://${vital.release.repo}/</url>
     </repository>
 </distributionManagement>
 
